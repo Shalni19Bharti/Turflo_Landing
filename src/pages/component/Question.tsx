@@ -1,7 +1,11 @@
 import Background from '../../../public/turflo2.png';
 import FrequentlyQuestion from "../../components/ui/Question";
 
-const FAQSection = () => {
+interface QuestionProps {
+  id?: string;
+}
+
+const FAQSection = ({ id }: QuestionProps) => {
   const faqData = [
     {
       question: "What is Turflo and how does it work?",
@@ -24,19 +28,24 @@ const FAQSection = () => {
       answer: "Yes! Turflo allows you to connect with other players in your area who share your interests. You can join existing games or create your own and invite others to join.",
     },
   ];
-
   return (
-    <div
-      className="bg-cover bg-center text-white pb-[75px]"
-      style={{ backgroundImage: `url(${Background})` }}
-    >
-      <h2 className="text-center pt-[67px] pb-[77px] text-[36px] font-bold text-[#FFFFFF]">
-        Frequently Asked Questions
-      </h2>
-      {faqData.map((faq, index) => (
-        <FrequentlyQuestion key={index} question={faq.question} answer={faq.answer} />
-      ))}
-    </div>
+    <section id={id}>
+      <div className="relative">
+        <div
+          className="absolute inset-0 bg-cover bg-center z-0"
+          style={{ backgroundImage: `url(${Background})` }}
+        />
+        <div className="absolute inset-0 bg-black opacity-50 z-1"></div>
+        <div className="relative fo z-10 text-white pb-[50px] md:pb-[79px] lg:pb-[79px]">
+          <h2 className="text-center pt-[57px] pb-[66px] md:pt-[67px] md:pb-[61px] lg:pt-[77px] lg:pb-[77px] text-[36px] font-bold text-[#FFFFFF]">
+            Frequently Asked Questions
+          </h2>
+          {faqData.map((faq, index) => (
+            <FrequentlyQuestion key={index} question={faq.question} answer={faq.answer} />
+          ))}
+        </div>
+      </div>
+    </section>
   );
 };
 

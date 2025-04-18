@@ -4,53 +4,72 @@ import FeedbackData from '../../../src/data/feedback.json';
 
 const Feedback = () => {
   const [position, setPosition] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, ] = useState(false);
+  const [activeRow, setActiveRow] = useState(0);
   const itemWidth = 316;
   const gap = 24;
+  const totalItems = 5;
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const firstRowItems = FeedbackData.slice(0, 5);
-  const secondRowItems = FeedbackData.slice(5, 10);
-
+  const firstRowItems = Array(5).fill(FeedbackData.slice(0, 5)).flat();
+  const secondRowItems = Array(5).fill(FeedbackData.slice(5, 10)).flat();
   useEffect(() => {
     if (isHovered) return;
 
     const interval = setInterval(() => {
       setPosition((prevPosition) => {
         const nextPosition = prevPosition + 1;
-
-        if (nextPosition >= 5) {
+        if (nextPosition >= totalItems) {
           return 0;
         }
         return nextPosition;
       });
+      
+      // Toggle between rows
+      setActiveRow(prev => (prev === 0 ? 1 : 0));
     }, 3000);
 
     return () => clearInterval(interval);
   }, [isHovered]);
 
+  useEffect(() => {
+    if (position === 0) {
+      const firstRow = document.querySelector('.first-row') as HTMLElement;
+      const secondRow = document.querySelector('.second-row') as HTMLElement;
+
+      if (firstRow && secondRow) {
+        firstRow.style.transition = 'none';
+        secondRow.style.transition = 'none';
+
+        setTimeout(() => {
+          firstRow.style.transition = 'transform 1000ms linear';
+          secondRow.style.transition = 'transform 1000ms linear';
+        }, 50);
+      }
+    }
+  }, [position]);
+
   const leftTransform = `translateX(-${position * (itemWidth + gap)}px)`;
-  const rightTransform = `translateX(${position * (itemWidth + gap)}px)`;
 
   return (
-    <div
-      className="bg-[#1C1C1C] pb-[88px] px-6 overflow-hidden"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="pt-[79px] md:pt-[109px] lg:pt-[109px] pb-[86px] md:pb-[110px] lg:pb-[125px] xl:pb-[98px] text-center">
-        <h1 className="text-white font-bold text-[28px] md:text-[30px] lg:text-[32px]">
+    <div className="bg-[#1C1C1C] pb-[86px] md:pb-[100px] lg:pb-[107px] px-6 overflow-hidden">
+      <div className="pt-[79px] md:pt-[109px] lg:pt-[109px] text-center">
+        <h1 className="text-white font-bold text-[28px] md:text-[32px] lg:text-[36px] pb-[86px] md:pb-[110px] lg:pb-[125px]">
           Real Moments, Real Players.
         </h1>
       </div>
 
-      <div ref={containerRef} className="w-full overflow-hidden">
+      <div 
+        ref={containerRef} 
+        className="w-full overflow-hidden"
+      >
+        {/* First row */}
         <div className="overflow-hidden mb-6">
           <div
-            className="flex gap-x-[24px] transition-transform duration-1000 ease-linear"
+            className="flex gap-x-6 transition-transform duration-1000 ease-linear first-row"
             style={{
-              transform: leftTransform,
-              width: `${5 * (itemWidth + gap) - gap}px`
+              transform: activeRow === 0 ? leftTransform : 'translateX(0)',
+              width: `${totalItems * 3 * (itemWidth + gap) - gap}px`
             }}
           >
             {firstRowItems.map((feedback, index) => (
@@ -67,12 +86,13 @@ const Feedback = () => {
           </div>
         </div>
 
+        {/* Second row */}
         <div className="overflow-hidden">
           <div
-            className="flex gap-x-[24px] transition-transform duration-1000 ease-linear"
+            className="flex gap-x-6 transition-transform duration-1000 ease-linear second-row"
             style={{
-              transform: rightTransform,
-              width: `${5 * (itemWidth + gap) - gap}px`
+              transform: activeRow === 1 ? leftTransform : 'translateX(0)',
+              width: `${totalItems * 3 * (itemWidth + gap) - gap}px`
             }}
           >
             {secondRowItems.map((feedback, index) => (

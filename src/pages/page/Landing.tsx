@@ -11,12 +11,18 @@ const Landing = () => {
     return (
         <>
             <Header />
-            <About />
+            <section id="about">
+                <About />
+            </section>
             <Feature />
             <Detail />
             <Feedback />
-            <Question />
-            <Contact />
+            <section id="faq">
+                <Question />
+            </section>
+            <section id="contact">
+                <Contact />
+            </section>
             <Footer />
         </>
     );

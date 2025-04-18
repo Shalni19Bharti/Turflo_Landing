@@ -2,6 +2,7 @@ import Facebook from '../../assets/icons/Facebook-B.png';
 import Instagram from '../../assets/icons/Instagram-B.png';
 import Linkdin from '../../assets/icons/Linkdin-B.png';
 import Twitter from '../../assets/icons/Twitter-B.png';
+import Logo from '../../../public/turflo-logo.png';
 
 interface ContactProps {
   id?: string;
@@ -13,7 +14,7 @@ const Contact = ({ id }: ContactProps) => {
       <div className="bg-[#18181B] text-white border-b border-[#FFFFFF]">
 
         <div className="flex justify-center items-center pt-[28px]">
-          <img src="public/turflo-logo.png" alt="Turflo Logo" className="h-[92px] w-[191px]" />
+          <img src={Logo} alt="Turflo Logo" className="h-[92px] w-[191px]" />
         </div>
 
         <footer className="pt-[28px] px-6">
